@@ -8,7 +8,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
-import ouyj.hyena.com.infonews.utils.LruImageCache;
+import ouyj.hyena.com.infonews.utils.LruImgCache;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,13 +30,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         //创建请求队列对象
         RequestQueue queue = Volley.newRequestQueue(this);
-        LruImageCache lruImageCache = LruImageCache.instance();
+        //一个实现图像缓存接口的类
+        LruImgCache lruImageCache = LruImgCache.instance();
+        //创建ImageLoader（从网络中获取图片的类，创建时传递一个内存缓存类）
         ImageLoader loader = new ImageLoader(queue,lruImageCache);
+        //设置默认图片直到网络图片加载完为止
         imgView.setDefaultImageResId(defaultImage);
+        //设置错误图片在网络加载出错时显示
         imgView.setErrorImageResId(defaultImage);
+        //开始显示图像
         imgView.setImageUrl(url,loader);
     }
 }
