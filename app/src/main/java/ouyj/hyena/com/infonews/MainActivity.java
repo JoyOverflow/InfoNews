@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
                 view = inflater.inflate(R.layout.tab_main, viewGroup, false);
             }
             //设置文本和图片
-            TextView textView = view.findViewById(R.id.tv_tab_content);
-            textView.setText(tabNames[i]);
+            TextView txtTitle = view.findViewById(R.id.tv_tab_content);
+            txtTitle.setText(tabNames[i]);
             ImageView image =  view.findViewById(R.id.iv_tab_img);
             image.setImageResource(tabIcons[i]);
             return view;

@@ -12,6 +12,12 @@ public class ScreenUtil {
         dm = context.getResources().getDisplayMetrics();
     }
 
+    /**
+     * 将dp转换为像素px
+     * @param activity
+     * @param dp
+     * @return
+     */
     public static int dp2px(Activity activity, float dp)
     {
         setDisplayMetrics(activity);

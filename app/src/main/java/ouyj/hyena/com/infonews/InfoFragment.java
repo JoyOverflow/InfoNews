@@ -3,18 +3,17 @@ package ouyj.hyena.com.infonews;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import com.shizhefei.fragment.LazyFragment;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InfoFragment extends Fragment {
+public class InfoFragment extends LazyFragment {
 
-    public static final String INTENT_STRING_TABNAME = "intent_String_tabName";
-    public static final String INTENT_INT_POSITION = "intent_int_position";
+    public static final String STRING_TABNAME = "intent_String_tabName";
+    public static final String INT_TABPOSITION = "intent_int_position";
 
     public InfoFragment() {
         // Required empty public constructor
@@ -22,9 +21,8 @@ public class InfoFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false);
+    protected void onCreateViewLazy(Bundle savedInstanceState) {
+        super.onCreateViewLazy(savedInstanceState);
+        setContentView(R.layout.fragment_info);
     }
-
 }
