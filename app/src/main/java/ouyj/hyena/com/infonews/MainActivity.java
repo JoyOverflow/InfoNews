@@ -5,7 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //
+        //查找视图引用
         SViewPager viewPager = findViewById(R.id.view_pager);
         Indicator indicator = findViewById(R.id.fixed_indicator);
+
+        //默认=1（表示左右相连的1个页面和当前页面会被缓存住，比如切换到左边页面则是不会重新创建的）
+        //设置=4（一次性加载所有的TabsFragment，适配器内会执行5次getViewForTab或getFragmentForPage）
+        viewPager.setOffscreenPageLimit(4);
 
         //将viewPager和indicator联合使用（设置适配器）
         IndicatorViewPager ivPager = new IndicatorViewPager(indicator, viewPager);
@@ -37,6 +44,26 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.index_name);
         setSupportActionBar(toolbar);
     }
+    /**
+     * 活动选项菜单
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     /**
      * 自定义适配器类
@@ -69,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         public int getCount() {
+            Log.d(TAG, "getCount！");
             return tabNames.length;
         }
 
@@ -81,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         public View getViewForTab(int i, View view, ViewGroup viewGroup) {
+            Log.d(TAG, "getViewForTab！");
+
             //获取每一个选项卡视图
             if (view == null) {
                 //调用View静态inflate方法，获取View对象
@@ -101,12 +131,14 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         public Fragment getFragmentForPage(int i) {
-            Fragment first= new TabsFragment();
+            Log.d(TAG, "getFragmentForPage！");
+
+            Fragment tab= new TabsFragment();
             Bundle bundle = new Bundle();
-            bundle.putString(TabsFragment.INTENT_STRING_TABNAME, tabNames[i]);
-            bundle.putInt(TabsFragment.INTENT_INT_INDEX, i);
-            first.setArguments(bundle);
-            return first;
+            bundle.putString(TabsFragment.STRING_TABNAME, tabNames[i]);
+            bundle.putInt(TabsFragment.INT_TABINDEX, i);
+            tab.setArguments(bundle);
+            return tab;
         }
     }
 }
