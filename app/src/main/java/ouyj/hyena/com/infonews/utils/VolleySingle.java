@@ -55,6 +55,11 @@ public class VolleySingle {
         }
         return queue;
     }
+
+
+
+
+
     public ImageLoader getImageLoader() {
         return imgLoader;
     }

@@ -134,12 +134,15 @@ public class TabsFragment extends LazyFragment {
          */
         @Override
         public Fragment getFragmentForPage(int i) {
+            //加载片段（可为普通的Fragment）
             InfoFragment info = new InfoFragment();
             Bundle bundle = new Bundle();
             bundle.putString(InfoFragment.STRING_TABNAME, URLs.tabName[i]);
             bundle.putInt(InfoFragment.INT_TABPOSITION, i);
             info.setArguments(bundle);
             return info;
+            //TaskFragment task = new TaskFragment();
+            //return task;
         }
     }
 
