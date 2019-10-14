@@ -94,6 +94,32 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
         setRecyclerScroll();
     }
     private void setRecyclerScroll() {
+        //回收视图的滚动事件
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //判断是否滚到回收视图的底部
+                if (linear.findLastVisibleItemPosition() == newsList.size() - 1
+                        && newsList.size() != 0) {
+                    getNews();
+                }
+            }
+        });
+    }
+    /**
+     * 下拉刷新时实现数据加载
+     */
+    @Override
+    public void onRefresh() {
+        Log.d(MainActivity.TAG, "正在下拉刷新！");
+        //清空页范围
+        pageModel.reSet();
+        //清空从服务端获取的新闻列表
+        newsList.clear();
+        postsList.clear();
+        //重新加载数据
+        getNews();
     }
     /**
      * 获取新闻数据
@@ -137,13 +163,13 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
                                 }
                                 //得到新闻ID
                                 String postId=news.getPostid();
+                                //填充与适配器关联的数据源
                                 if (!postsList.contains(postId)) {
                                     postsList.add(postId);
                                     newsList.add(news);
                                 }
                             }
-
-                            //通知适配器更改数据
+                            //通知适配器更改数据（数据源内已有数据）
                             adapter.notifyDataSetChanged();
                             //取消下拉视图刷新
                             swiper.setRefreshing(false);
@@ -159,26 +185,8 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
         VolleySingle volley=VolleySingle.getInstance(context);
         volley.getRequestQueue().add(stringRequest);
 
-
-
-
-
-
     }
-    /**
-     * 下拉刷新时实现数据加载
-     */
-    @Override
-    public void onRefresh() {
-        Log.d(MainActivity.TAG, "正在下拉刷新！");
-        //清空页范围
-        pageModel.reSet();
-        //清空从服务端获取的新闻列表
-        newsList.clear();
-        postsList.clear();
-        //重新加载数据
-        getNews();
-    }
+
 
 
     static class PageModel {

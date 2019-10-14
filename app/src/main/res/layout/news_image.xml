@@ -29,7 +29,6 @@
         android:textSize="@dimen/list_vote_text_size"
         android:paddingRight="@dimen/list_item_vote_padding"/>
     <ouyj.hyena.com.netease.widget.RecyclerImgView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_big_image_item_height"
         android:id="@+id/rv_subrecycleview"

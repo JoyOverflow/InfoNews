@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ouyj.hyena.com.netease.widget.SwitchImage
-        xmlns:personattr="http://schemas.android.com/apk/res/ouyj.hyena.com.netease"
+        xmlns:personattr="http://schemas.android.com/apk/res/ouyj.hyena.com.infonews"
         android:id="@+id/si_banner_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

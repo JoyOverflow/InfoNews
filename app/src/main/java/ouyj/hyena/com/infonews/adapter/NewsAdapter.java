@@ -2,6 +2,7 @@ package ouyj.hyena.com.infonews.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
+import ouyj.hyena.com.infonews.MainActivity;
 import ouyj.hyena.com.infonews.R;
 import ouyj.hyena.com.infonews.model.NewsItem;
 import ouyj.hyena.com.infonews.widget.RecyclerImgView;
@@ -25,13 +27,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private ArrayList<NewsItem> listItem;
     private LayoutInflater layoutInflater;
 
-    //新闻类型的枚举
-    public enum NewsType {
-        ITEM_TYPE_BANNER,
-        ITEM_TYPE_IMAGE,
-        ITEM_TYPE_TEXT
-    }
-
 
     /**
      *  构造方法（传入上下文和数据源）
@@ -45,68 +40,49 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     /**
-     * 返回创建的ViewHolder（负责每项的自定义布局资源）
-     * 而viewHolder作为回收视图所管理的视图对象可以在列表中复用
+     * 新闻类型的枚举（0,1,2）
+    */
+    public enum NewsType {
+        ITEM_TYPE_BANNER,
+        ITEM_TYPE_IMAGE,
+        ITEM_TYPE_TEXT
+    }
+    /**
+     * 获取每项的类型（创建项布局时调用）
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return NewsType.ITEM_TYPE_TEXT.ordinal();
+    }
+
+    /**
+     * 创建每项的自定义布局资源（ViewHolder由回收视图所管理可在列表中重复使用）
      * @param parent
      * @param viewType
      * @return
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(MainActivity.TAG, "NewsAdapter.onCreateViewHolder！" + viewType);
+
         if (viewType == NewsType.ITEM_TYPE_TEXT.ordinal()) {
             //普通新闻
             View hold = layoutInflater.inflate(R.layout.news_text, parent, false);
             return new TextViewHolder(hold);
         }
         else if(viewType == NewsType.ITEM_TYPE_IMAGE.ordinal()){
-            View hold = layoutInflater.inflate(
-                    R.layout.news_image,
-                    parent,
-                    false
-            );
+            //图片新闻
+            View hold = layoutInflater.inflate(R.layout.news_image, parent, false);
             return new ImageViewHolder(hold);
         }
         else {
-            View hold = layoutInflater.inflate(
-                    R.layout.news_banner,
-                    parent,
-                    false
-            );
+            //横幅新闻
+            View hold = layoutInflater.inflate(R.layout.news_banner, parent, false);
             return new BannerViewHold(hold);
         }
     }
-    /**
-     * 负责每项的视图数据绑定和事件侦听
-     * 调用时机是项将要出现在屏幕上时，这时需要向viewHolder中填充数据
-     * @param holder
-     * @param position
-     */
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof TextViewHolder) {
-
-        }
-        else if (holder instanceof ImageViewHolder) {
-
-        }
-        else if (holder instanceof BannerViewHold) {
-
-        }
-    }
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
-
-
-    /**
-     * 普通新闻项
-     */
     public static class TextViewHolder extends RecyclerView.ViewHolder {
         NetworkImageView imgView;
         TextView title,subTitle,vote;
@@ -120,6 +96,46 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             vote = view.findViewById(R.id.list_item_vote);
         }
     }
+
+
+
+
+
+    /**
+     * 负责每项的视图数据绑定和事件侦听
+     * 调用时机是项将要出现在屏幕上时，这时需要向viewHolder中填充数据
+     * @param holder
+     * @param position
+     */
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.d(MainActivity.TAG, "NewsAdapter.onBindViewHolder！");
+
+        if (holder instanceof TextViewHolder) {
+
+        }
+        else if (holder instanceof ImageViewHolder) {
+
+        }
+        else if (holder instanceof BannerViewHold) {
+
+        }
+    }
+    @Override
+    public int getItemCount() {
+        int result=listItem == null ? 0 : listItem.size();
+        Log.d(MainActivity.TAG, "NewsAdapter.getItemCount！" + result);
+        return result;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        Log.d(MainActivity.TAG, "NewsAdapter.getItemId！");
+        return super.getItemId(position);
+    }
+
+
+
     class TextViewClickListener implements View.OnClickListener {
         int position;
         TextViewClickListener(int i) {
