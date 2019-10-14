@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ouyj.hyena.com.netease.widget.SwitchImage
+        xmlns:personattr="http://schemas.android.com/apk/res/ouyj.hyena.com.netease"
+        android:id="@+id/si_banner_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        personattr:is_last_item_to_next_or_stop="true">
+    </ouyj.hyena.com.netease.widget.SwitchImage>
+
+</RelativeLayout>

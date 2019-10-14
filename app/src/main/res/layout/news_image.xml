@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/list_margin_left_and_right"
+    android:layout_marginRight="@dimen/list_margin_left_and_right"
+    android:layout_marginTop="@dimen/list_margin_top_and_bottom">
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_title_text_size"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="50dp"
+        android:textColor="#000"
+        android:text=""
+        android:layout_marginBottom="@dimen/list_margin_top_and_bottom"
+        android:maxLines="1"
+        android:ellipsize="end"  />
+    <TextView
+        android:id="@+id/tv_vote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_title"
+        android:layout_alignParentRight="true"
+        android:text="@string/votezero"
+        android:textColor="@color/list_item_vote_color"
+        android:textSize="@dimen/list_vote_text_size"
+        android:paddingRight="@dimen/list_item_vote_padding"/>
+    <ouyj.hyena.com.netease.widget.RecyclerImgView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_big_image_item_height"
+        android:id="@+id/rv_subrecycleview"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rv_subrecycleview"
+        android:background="@color/gray_line_color"
+        android:layout_marginTop="@dimen/list_margin_top_and_bottom">
+    </View>
+</RelativeLayout>

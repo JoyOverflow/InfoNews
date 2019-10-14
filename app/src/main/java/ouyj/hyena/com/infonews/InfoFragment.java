@@ -7,12 +7,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.shizhefei.fragment.LazyFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import ouyj.hyena.com.infonews.adapter.NewsAdapter;
 import ouyj.hyena.com.infonews.model.NewsItem;
+import ouyj.hyena.com.infonews.utils.NewsGlobal;
+import ouyj.hyena.com.infonews.utils.RequestSingleton;
 import ouyj.hyena.com.infonews.utils.URLs;
 import ouyj.hyena.com.infonews.utils.VolleySingle;
 
@@ -35,6 +45,8 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
     private ArrayList<NewsItem> newsList = new ArrayList<>();
     private PageModel pageModel;
 
+    //存储新闻ID（防止重复）
+    private HashSet<String> postsList = new HashSet<>();
     /**
      * 构造方法
      */
@@ -87,27 +99,71 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
      * 获取新闻数据
      */
     private void getNews() {
+        //下次调用的页范围
         String url2= URLs.concatNewsListURL(tabName, pageModel.getRangePage());
         Log.d(MainActivity.TAG, "当前请求：" + url2);
-        //下次调用的页范围
         pageModel.moveRangePage();
 
 
         //解析网络数据
         String url="http://c.m.163.com/nc/article/headline/T1348647909107/0-10.html";
+        RequestSingleton request = RequestSingleton.getInstance();
+        StringRequest stringRequest=request.getGETStringRequest(
+                getActivity(),
+                url,
+                new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        try {
+                            String tmp=response.toString();
+                            JSONObject obj = new JSONObject(tmp);
+
+                            //得到新闻数组
+                            JSONArray itemArray = obj.getJSONArray("T1348647909107");
+                            ArrayList<NewsItem> items = new Gson().fromJson(
+                                    itemArray.toString(),
+                                    NewsGlobal.ItemType
+                            );
+
+                            //遍历新闻列表（去除重复）
+                            for (int i = 0; i < items.size(); i++) {
+                                NewsItem news = items.get(i);
+
+                                if (news.getTemplate() != null && news.getTemplate().length() > 0) {
+                                    //如果是带Template的（新闻列表内只允许一个）
+                                    if (newsList.size() > 0) {
+                                        continue;
+                                    }
+                                }
+                                //得到新闻ID
+                                String postId=news.getPostid();
+                                if (!postsList.contains(postId)) {
+                                    postsList.add(postId);
+                                    newsList.add(news);
+                                }
+                            }
+
+                            //通知适配器更改数据
+                            adapter.notifyDataSetChanged();
+                            //取消下拉视图刷新
+                            swiper.setRefreshing(false);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
         //创建Volley对象
         Context context=getActivity().getApplicationContext();
         VolleySingle volley=VolleySingle.getInstance(context);
-
-        //volley.getRequestQueue().add();
-
+        volley.getRequestQueue().add(stringRequest);
 
 
 
-        //通知适配器更改数据
-        adapter.notifyDataSetChanged();
-        //取消下拉视图刷新
-        swiper.setRefreshing(false);
+
+
+
     }
     /**
      * 下拉刷新时实现数据加载
@@ -115,16 +171,14 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onRefresh() {
         Log.d(MainActivity.TAG, "正在下拉刷新！");
-
         //清空页范围
         pageModel.reSet();
-
         //清空从服务端获取的新闻列表
         newsList.clear();
+        postsList.clear();
         //重新加载数据
         getNews();
     }
-
 
 
     static class PageModel {

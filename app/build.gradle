@@ -30,4 +30,5 @@ dependencies {
     implementation files('libs/ViewpagerIndicator_1.0.2.jar')
 
     implementation 'site.okhttp.codeyel:HandyVolley:1.0.3'
+    implementation 'com.google.code.gson:gson:2.4'
 }
