@@ -133,7 +133,8 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
 
 
         //解析网络数据
-        String url="http://c.m.163.com/nc/article/headline/T1348647909107/0-20.html";
+        //String url="http://c.m.163.com/nc/article/headline/T1348647909107/0-20.html";
+        String url="http://c.m.163.com/nc/article/headline/T1348654204705/0-10.html";
         RequestSingleton request = RequestSingleton.getInstance();
         StringRequest stringRequest=request.getGETStringRequest(
                 getActivity(),
@@ -146,7 +147,8 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
                             JSONObject obj = new JSONObject(tmp);
 
                             //得到新闻数组
-                            JSONArray itemArray = obj.getJSONArray("T1348647909107");
+                            //JSONArray itemArray = obj.getJSONArray("T1348647909107");
+                            JSONArray itemArray = obj.getJSONArray("T1348654204705");
                             ArrayList<NewsItem> items = new Gson().fromJson(
                                     itemArray.toString(),
                                     NewsGlobal.ItemType

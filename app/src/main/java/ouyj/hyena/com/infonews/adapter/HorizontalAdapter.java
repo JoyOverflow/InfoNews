@@ -80,16 +80,16 @@ public class HorizontalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (photoSet == null || photoSet.getPhotos() == null) {
-            setNetworkImageView(((ImageViewHolder) holder).imgView, "");
+            networkImage(((ImageViewHolder) holder).imgView, "");
         } else {
             String url=photoSet.getPhotos().get(position).getTimgurl();
-            setNetworkImageView(
+            networkImage(
                     ((ImageViewHolder) holder).imgView,
                     URLParse.parseWebImage(url, imageWeight)
             );
         }
     }
-    private void setNetworkImageView(NetworkImageView networkImageView, String url) {
+    private void networkImage(NetworkImageView networkImageView, String url) {
         networkImageView.setDefaultImageResId(defaultImage);
         networkImageView.setErrorImageResId(defaultImage);
         networkImageView.setImageUrl(url,

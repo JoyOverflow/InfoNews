@@ -51,4 +51,9 @@ public class NewsItem {
         return ads;
     }
 
+    private List<Imgextra> imgextra;
+    public List<Imgextra> getImgextra() {
+        return imgextra;
+    }
+
 }
