@@ -67,13 +67,14 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
         tabName = getArguments().getString(STRING_TABNAME);
         position = getArguments().getInt(INT_TABPOSITION);
 
-        //查找下拉刷新视图引用
+        //查找下拉刷新视图引用（设置下拉刷新事件）
         swiper = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
-        swiper.setOnRefreshListener(this);
         swiper.setColorSchemeResources(
                 android.R.color.holo_green_light,
                 android.R.color.holo_green_dark
         );
+        swiper.setOnRefreshListener(this);
+
 
         //查找回收视图引用并设置（布局管理器用来确定项摆放规则）
         recycler = (RecyclerView)findViewById(R.id.recycler_view);
@@ -85,13 +86,13 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
                 newsList
         );
         recycler.setAdapter(adapter);
-
-
-        pageModel = new PageModel();
-        //获取新闻数据
-        getNews();
         //设置回收视图的滚动事件
         setRecyclerScroll();
+
+
+        //获取新闻数据
+        pageModel = new PageModel();
+        getNews();
     }
     private void setRecyclerScroll() {
         //回收视图的滚动事件
@@ -99,7 +100,7 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                //判断是否滚到回收视图的底部
+                //判断是否滚到回收视图的底部（是则继续加载数据）
                 if (linear.findLastVisibleItemPosition() == newsList.size() - 1
                         && newsList.size() != 0) {
                     getNews();
@@ -132,7 +133,7 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
 
 
         //解析网络数据
-        String url="http://c.m.163.com/nc/article/headline/T1348647909107/0-10.html";
+        String url="http://c.m.163.com/nc/article/headline/T1348647909107/0-20.html";
         RequestSingleton request = RequestSingleton.getInstance();
         StringRequest stringRequest=request.getGETStringRequest(
                 getActivity(),
@@ -163,7 +164,7 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
                                 }
                                 //得到新闻ID
                                 String postId=news.getPostid();
-                                //填充与适配器关联的数据源
+                                //填充与适配器关联的数据源（适配器负责项视图的数据绑定）
                                 if (!postsList.contains(postId)) {
                                     postsList.add(postId);
                                     newsList.add(news);

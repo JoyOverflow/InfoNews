@@ -77,14 +77,12 @@ public class TabsFragment extends LazyFragment {
         //将viewPager和indicator关联（设置适配器）
         IndicatorViewPager tabPager = new IndicatorViewPager(indicator, viewPager);
         tabPager.setAdapter(new TabAdapter(getChildFragmentManager()));
-
         //inflate = LayoutInflater.from(getApplicationContext());
     }
 
     private class TabAdapter extends IndicatorViewPager.IndicatorFragmentPagerAdapter {
 
         private LayoutInflater inflate;
-
         /**
          * 构造方法
          * @param manager
@@ -93,7 +91,6 @@ public class TabsFragment extends LazyFragment {
             super(manager);
             inflate = LayoutInflater.from(getApplicationContext());
         }
-
         /**
          * 得到选项卡数
          * @return

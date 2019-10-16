@@ -20,6 +20,15 @@ public class URLs {
     public static final String host = "http://c.m.163.com/";
     public static final String PRE_URL = host + "news/";
 
+    //提取指定分辫率的图片
+    public static final String WEBP_PRE_URL2 = "http://nimg.ws.126.net/?url=";
+    public static final String WEBP_POS_URL2 = "x2147483647&quality=75&type=webp";
+
+
+    public static final String IMAGE_JSON_URL = "http://c.3g.163.com/photo/api/set/";
+
+
+
     public static String concatNewsListURL(String name, String startEndIndex) {
         String keyword= getUrlKey(name);
         return PRE_URL + keyword + "/" + startEndIndex +  ".html";
