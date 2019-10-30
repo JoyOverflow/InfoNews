@@ -59,9 +59,9 @@ public class TabsFragment extends LazyFragment {
         viewPager.setOffscreenPageLimit(4);
 
         //设置滚动选项指示器
+        ScrollIndicatorView indicator = (ScrollIndicatorView) findViewById(R.id.scroll_indicator);
         ColorBar colorBar = new ColorBar(getApplicationContext(), Color.RED, 5);
         colorBar.setWidth(ScreenUtil.dp2px(getActivity(), barWidth));
-        ScrollIndicatorView indicator = (ScrollIndicatorView) findViewById(R.id.scroll_indicator);
         indicator.setScrollBar(colorBar);
 
         //设置滚动时颜色的改变
@@ -74,7 +74,7 @@ public class TabsFragment extends LazyFragment {
                 new OnTransitionTextListener().setColor(selectColor, unSelectColor).setSize(selectSize, unSelectSize)
         );
 
-        //将viewPager和indicator关联（设置适配器）
+        //将viewPager和indicator联合起来（设置适配器）
         IndicatorViewPager tabPager = new IndicatorViewPager(indicator, viewPager);
         tabPager.setAdapter(new TabAdapter(getChildFragmentManager()));
         //inflate = LayoutInflater.from(getApplicationContext());

@@ -19,7 +19,7 @@
         android:layout_weight="1"
         android:background="#eee" />
     <com.shizhefei.view.indicator.FixedIndicatorView
-        android:id="@+id/fixed_indicator"
+        android:id="@+id/fix_indicator"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:background="@color/tab_background"/>

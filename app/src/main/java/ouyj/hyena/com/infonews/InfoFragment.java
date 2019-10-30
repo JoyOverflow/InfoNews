@@ -76,7 +76,7 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
         swiper.setOnRefreshListener(this);
 
 
-        //查找回收视图引用并设置（布局管理器用来确定项摆放规则）
+        //查找回收视图引用并设置布局管理器（确定项摆放规则）
         recycler = (RecyclerView)findViewById(R.id.recycler_view);
         linear = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(linear);
@@ -140,6 +140,7 @@ public class InfoFragment extends LazyFragment implements SwipeRefreshLayout.OnR
                 getActivity(),
                 url,
                 new Response.Listener() {
+                    //请求成功时的处理
                     @Override
                     public void onResponse(Object response) {
                         try {

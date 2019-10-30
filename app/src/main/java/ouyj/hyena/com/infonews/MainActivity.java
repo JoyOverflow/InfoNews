@@ -29,11 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         //查找视图引用
         SViewPager viewPager = findViewById(R.id.view_pager);
-        Indicator indicator = findViewById(R.id.fixed_indicator);
+        Indicator indicator = findViewById(R.id.fix_indicator);
+
         //默认=1（表示左右相连的1个页面和当前页面会被缓存住，比如切换到左边页面则是不会重新创建的）
         //设置=4（一次性加载所有的TabsFragment，适配器内会执行5次getViewForTab或getFragmentForPage）
         viewPager.setOffscreenPageLimit(4);
         //将viewPager和indicator联合使用（设置适配器）
+        //传入当前活动的片段管理器
         IndicatorViewPager ivPager = new IndicatorViewPager(indicator, viewPager);
         ivPager.setAdapter(new IvAdapter(getSupportFragmentManager()));
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         //查找工具栏并设置为动作栏
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.index_name);
+        //使用Toolbar替换ActionBar控件
         setSupportActionBar(toolbar);
     }
     /**
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             inflater = LayoutInflater.from(getApplicationContext());
         }
         /**
-         * 得到选项卡数
+         * 得到选项卡总数
          * @return
          */
         @Override
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
-         * 获取到一个选项卡
+         * 获取当前选项卡
          * @param i
          * @param view
          * @param viewGroup
@@ -116,15 +119,15 @@ public class MainActivity extends AppCompatActivity {
                 view = inflater.inflate(R.layout.tab_main, viewGroup, false);
             }
             //设置文本和图片
-            TextView txtTitle = view.findViewById(R.id.tv_tab_content);
+            TextView txtTitle = view.findViewById(R.id.tv_tab_title);
             txtTitle.setText(tabNames[i]);
-            ImageView image =  view.findViewById(R.id.iv_tab_img);
+            ImageView image =  view.findViewById(R.id.iv_tab_image);
             image.setImageResource(tabIcons[i]);
             return view;
         }
 
         /**
-         * 获取每一个页面（返回片段）
+         * 获取当前页面（返回片段）
          * @param i
          * @return
          */
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getFragmentForPage(int i) {
             Log.d(TAG, "getFragmentForPage！");
 
+            //返回当前片段（传递参数）
             Fragment tab= new TabsFragment();
             Bundle bundle = new Bundle();
             bundle.putString(TabsFragment.STRING_TABNAME, tabNames[i]);
